@@ -1,0 +1,774 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Portfolio – Eliza Vornia</title><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,900;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/><style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --bg2: #111118;
+      --bg3: #16161f;
+      --surface: #1c1c27;
+      --border: rgba(255,255,255,0.07);
+      --accent: #c8b4f5;
+      --accent2: #82e8d0;
+      --accent3: #f5c8b4;
+      --text: #e8e6f0;
+      --muted: #7a7890;
+      --nav-bg: rgba(10,10,15,.85);
+      --shadow: rgba(0,0,0,.5);
+      --font-display: 'Fraunces', serif;
+      --font-body: 'DM Sans', sans-serif;
+      --theme-transition: background .35s ease, color .35s ease, border-color .35s ease, box-shadow .35s ease;
+    }
+
+    /*  LIGHT MODE  */
+    html.light {
+      --bg: #f5f4f9;
+      --bg2: #edeaf5;
+      --bg3: #e4e0f0;
+      --surface: #ffffff;
+      --border: rgba(0,0,0,0.08);
+      --accent: #7c52d9;
+      --accent2: #1a9e82;
+      --accent3: #d97c52;
+      --text: #1a1828;
+      --muted: #6b6880;
+      --nav-bg: rgba(245,244,249,.9);
+      --shadow: rgba(100,80,180,.12);
+    }
+
+    /* System preference fallback */
+    @media (prefers-color-scheme: light) {
+      html:not(.dark):not(.light) {
+        --bg: #f5f4f9;
+        --bg2: #edeaf5;
+        --bg3: #e4e0f0;
+        --surface: #ffffff;
+        --border: rgba(0,0,0,0.08);
+        --accent: #7c52d9;
+        --accent2: #1a9e82;
+        --accent3: #d97c52;
+        --text: #1a1828;
+        --muted: #6b6880;
+        --nav-bg: rgba(245,244,249,.9);
+        --shadow: rgba(100,80,180,.12);
+      }
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: var(--theme-transition);
+    }
+
+    /* Smooth transitions for all themed elements */
+    nav, section, footer, .work-card, .contact-item,
+    .skill-tag, .social-link, .filter-btn, .qual-tab,
+    .form-group input, .form-group textarea,
+    .about-img-placeholder, .about-float, .hero-card {
+      transition: var(--theme-transition);
+    }
+
+    /*  NOISE OVERLAY  */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999; opacity: .5;
+    }
+
+    /*  SCROLLBAR  */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+    /*  NAV  */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 5vw;
+      backdrop-filter: blur(20px);
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--border);
+      transition: all .3s;
+    }
+    .logo {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.02em;
+    }
+    nav ul { display: flex; gap: 2.5rem; list-style: none; }
+    nav a {
+      color: var(--muted); text-decoration: none;
+      font-size: .85rem; font-weight: 500; letter-spacing: .06em;
+      text-transform: uppercase; transition: color .2s;
+      position: relative;
+    }
+    nav a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 1px; background: var(--accent);
+      transition: width .3s;
+    }
+    nav a:hover { color: var(--accent); }
+    nav a:hover::after { width: 100%; }
+
+    /*  HERO  */
+    #home {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 5vw 4rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 50% at 70% 50%, rgba(200,180,245,.06) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(130,232,208,.04) 0%, transparent 60%);
+    }
+    .hero-grid-lines {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .3rem .9rem; border-radius: 50px;
+      border: 1px solid rgba(200,180,245,.3);
+      background: rgba(200,180,245,.05);
+      font-size: .78rem; color: var(--accent);
+      letter-spacing: .08em; text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      animation: fadeUp .6s ease both;
+    }
+    .hero-tag span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+
+    .hero-name {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+      animation: fadeUp .6s .1s ease both;
+    }
+    .hero-name em { font-style: italic; color: var(--accent); }
+    .hero-role {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--muted); font-weight: 300;
+      margin-bottom: 2rem;
+      animation: fadeUp .6s .2s ease both;
+    }
+    .hero-role strong { color: var(--accent2); font-weight: 500; }
+    .hero-desc {
+      max-width: 440px; color: var(--muted); line-height: 1.8;
+      margin-bottom: 2.5rem;
+      animation: fadeUp .6s .3s ease both;
+    }
+    .hero-btns {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      animation: fadeUp .6s .4s ease both;
+    }
+    .btn {
+      padding: .8rem 2rem; border-radius: 50px;
+      text-decoration: none; font-size: .9rem; font-weight: 500;
+      transition: all .3s; cursor: pointer; border: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #a07cde);
+      color: #0a0a0f;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(200,180,245,.3); }
+    .btn-outline {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    .hero-right {
+      display: flex; justify-content: center; align-items: center;
+      position: relative;
+      animation: fadeUp .6s .2s ease both;
+    }
+    .hero-card {
+      width: 320px; aspect-ratio: 3/4;
+      background: var(--surface);
+      border-radius: 2rem;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      box-shadow: 0 40px 80px rgba(0,0,0,.5);
+    }
+    .hero-card::before {
+      content: '';
+      position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: conic-gradient(from 0deg, transparent 0deg, rgba(200,180,245,.1) 60deg, transparent 120deg);
+      animation: rotate 8s linear infinite;
+    }
+    @keyframes rotate { to { transform: rotate(360deg); } }
+    .hero-card-inner {
+      position: relative; z-index: 1; text-align: center; padding: 2rem;
+    }
+    .avatar-placeholder {
+      width: 120px; height: 120px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      margin: 0 auto 1.5rem;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-size: 2.5rem; font-weight: 900;
+      color: var(--bg);
+    }
+    .hero-stats {
+      display: flex; gap: 1.5rem; justify-content: center;
+      margin-top: 1.5rem;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: var(--font-display); font-size: 1.8rem;
+      font-weight: 900; color: var(--accent);
+    }
+    .stat-label { font-size: .7rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+
+    /*  SCROLL INDICATOR  */
+    .scroll-indicator {
+      position: absolute; bottom: 2rem; left: 5vw;
+      display: flex; align-items: center; gap: .8rem;
+      color: var(--muted); font-size: .75rem; letter-spacing: .1em; text-transform: uppercase;
+      animation: fadeUp .6s .8s ease both;
+    }
+    .scroll-line {
+      width: 40px; height: 1px; background: linear-gradient(90deg, var(--accent), transparent);
+      animation: scrollPulse 2s infinite;
+    }
+    @keyframes scrollPulse { 0%,100%{width:40px} 50%{width:60px} }
+
+    /*  SECTION COMMONS  */
+    section { padding: 6rem 5vw; }
+    .section-tag {
+      font-size: .75rem; text-transform: uppercase; letter-spacing: .15em;
+      color: var(--accent); margin-bottom: .8rem; display: block;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900; line-height: 1.1;
+      letter-spacing: -0.02em; margin-bottom: 1rem;
+    }
+    .section-title em { color: var(--accent); font-style: italic; }
+    .section-desc { color: var(--muted); max-width: 500px; line-height: 1.8; margin-bottom: 3rem; }
+    .divider { width: 60px; height: 2px; background: linear-gradient(90deg, var(--accent), transparent); margin-bottom: 1.5rem; }
+
+    /*  ABOUT  */
+    #about { background: var(--bg2); }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1.5fr; gap: 5rem; align-items: center;
+    }
+    .about-img-wrap { position: relative; }
+    .about-img-placeholder {
+      aspect-ratio: 4/5; border-radius: 1.5rem;
+      background: linear-gradient(135deg, var(--surface), var(--bg3));
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem; color: var(--border);
+      position: relative; overflow: hidden;
+    }
+    .about-img-placeholder::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(200,180,245,.05), rgba(130,232,208,.05));
+    }
+    .about-float {
+      position: absolute; bottom: -1.5rem; right: -1.5rem;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 1rem; padding: 1.2rem 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .float-icon { font-size: 1.8rem; }
+    .float-text { font-size: .8rem; }
+    .float-text strong { display: block; color: var(--text); }
+    .float-text span { color: var(--muted); font-size: .75rem; }
+    .skills-wrap { margin-top: 2rem; }
+    .skills-title { font-size: .8rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 1rem; }
+    .skills-list { display: flex; flex-wrap: wrap; gap: .6rem; }
+    .skill-tag {
+      padding: .35rem .9rem; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 50px;
+      font-size: .78rem; color: var(--text);
+      transition: all .2s;
+    }
+    .skill-tag:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    /*  WORKS  */
+    #works { background: var(--bg); }
+    .filter-bar {
+      display: flex; gap: .8rem; flex-wrap: wrap; margin-bottom: 3rem;
+    }
+    .filter-btn {
+      padding: .45rem 1.2rem; border-radius: 50px;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); font-size: .8rem; cursor: pointer;
+      transition: all .2s; font-family: var(--font-body);
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--accent); color: var(--bg); border-color: var(--accent);
+    }
+    .works-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+    .work-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 1.2rem; overflow: hidden;
+      transition: all .35s; cursor: pointer;
+    }
+    .work-card:hover { transform: translateY(-6px); border-color: rgba(200,180,245,.3); box-shadow: 0 20px 50px rgba(0,0,0,.4); }
+    .work-thumb {
+      height: 200px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem; position: relative; overflow: hidden;
+    }
+    .work-thumb::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,.5));
+    }
+    .work-body { padding: 1.5rem; }
+    .work-tags { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .8rem; }
+    .work-tag {
+      padding: .2rem .7rem; background: rgba(200,180,245,.1);
+      color: var(--accent); font-size: .7rem; border-radius: 50px;
+    }
+    .work-title {
+      font-family: var(--font-display); font-size: 1.25rem;
+      font-weight: 600; margin-bottom: .5rem;
+    }
+    .work-desc { font-size: .85rem; color: var(--muted); line-height: 1.7; }
+    .work-links { display: flex; gap: 1rem; margin-top: 1rem; }
+    .work-link {
+      font-size: .78rem; color: var(--accent); text-decoration: none;
+      display: flex; align-items: center; gap: .3rem; transition: gap .2s;
+    }
+    .work-link:hover { gap: .6rem; }
+
+    /*  QUALIFICATION  */
+    #qualification { background: var(--bg2); }
+    .qual-tabs { display: flex; gap: 0; margin-bottom: 3rem; }
+    .qual-tab {
+      padding: .75rem 2rem; background: transparent;
+      border: 1px solid var(--border); color: var(--muted);
+      cursor: pointer; font-family: var(--font-body); font-size: .85rem;
+      transition: all .2s;
+    }
+    .qual-tab:first-child { border-radius: 8px 0 0 8px; }
+    .qual-tab:last-child { border-radius: 0 8px 8px 0; }
+    .qual-tab.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+    .qual-content { display: none; }
+    .qual-content.active { display: block; }
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 1px; background: var(--border);
+    }
+    .timeline-item { position: relative; margin-bottom: 2.5rem; }
+    .timeline-dot {
+      position: absolute; left: -2.4rem; top: .4rem;
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--accent); border: 2px solid var(--bg2);
+    }
+    .timeline-date {
+      font-size: .75rem; color: var(--accent); letter-spacing: .06em;
+      text-transform: uppercase; margin-bottom: .4rem;
+    }
+    .timeline-title {
+      font-family: var(--font-display); font-size: 1.15rem;
+      font-weight: 600; margin-bottom: .2rem;
+    }
+    .timeline-sub { font-size: .85rem; color: var(--muted); margin-bottom: .6rem; }
+    .timeline-desc { font-size: .85rem; color: var(--muted); line-height: 1.7; }
+
+    /*  CONTACT  */
+    #contact { background: var(--bg); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .contact-info h3 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; }
+    .contact-info p { color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
+    .contact-items { display: flex; flex-direction: column; gap: 1.2rem; }
+    .contact-item {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem 1.2rem; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 1rem;
+      transition: border-color .2s;
+    }
+    .contact-item:hover { border-color: rgba(200,180,245,.3); }
+    .contact-icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: rgba(200,180,245,.1); display: flex;
+      align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;
+    }
+    .contact-detail strong { display: block; font-size: .85rem; }
+    .contact-detail span { font-size: .8rem; color: var(--muted); }
+    .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+    .form-group { display: flex; flex-direction: column; gap: .5rem; }
+    .form-group label { font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+    .form-group input, .form-group textarea, .form-group select {
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--text); border-radius: .75rem;
+      padding: .85rem 1.1rem; font-family: var(--font-body); font-size: .9rem;
+      transition: border-color .2s; outline: none; resize: none;
+    }
+    .form-group input:focus, .form-group textarea:focus {
+      border-color: var(--accent);
+    }
+    .form-group textarea { min-height: 120px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    /*  FOOTER  */
+    footer {
+      padding: 3rem 5vw;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-logo {
+      font-family: var(--font-display); font-size: 1.2rem; font-weight: 900;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    footer p { color: var(--muted); font-size: .8rem; }
+    .social-links { display: flex; gap: 1rem; }
+    .social-link {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: var(--surface); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; font-size: .9rem; color: var(--muted);
+      transition: all .2s;
+    }
+    .social-link:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    /*  ANIMATIONS  */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /*  THEME TOGGLE  */
+    .theme-toggle {
+      position: relative;
+      width: 56px; height: 28px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all .3s;
+      flex-shrink: 0;
+      outline: none;
+    }
+    .theme-toggle:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+    .theme-toggle:hover { border-color: var(--accent); }
+    .toggle-track {
+      position: absolute; inset: 2px;
+      border-radius: 50px;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 0 5px;
+      font-size: .65rem; pointer-events: none;
+    }
+    .toggle-thumb {
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1), background .3s;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .65rem;
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+    html.light .toggle-thumb { transform: translateX(27px); }
+
+    /*  SKIP TO CONTENT (Accessibility)  */
+    .skip-link {
+      position: absolute; top: -100%; left: 1rem;
+      background: var(--accent); color: var(--bg);
+      padding: .6rem 1.2rem; border-radius: 0 0 .5rem .5rem;
+      font-size: .85rem; font-weight: 600;
+      text-decoration: none; z-index: 9999;
+      transition: top .2s;
+    }
+    .skip-link:focus { top: 0; }
+
+    /*  FOCUS STYLES (Accessibility)  */
+    a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    /*  HIGH CONTRAST INDICATOR  */
+    @media (prefers-contrast: high) {
+      :root { --border: rgba(255,255,255,0.3); --muted: #b0aec8; }
+      html.light { --border: rgba(0,0,0,0.25); --muted: #444260; }
+    }
+
+    /*  REDUCE MOTION (Accessibility)  */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+    }
+
+    /* Light mode specific overrides */
+    html.light .hero-bg {
+      background:
+        radial-gradient(ellipse 60% 50% at 70% 50%, rgba(124,82,217,.08) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(26,158,130,.06) 0%, transparent 60%);
+    }
+    html.light .hero-grid-lines {
+      background-image:
+        linear-gradient(rgba(0,0,0,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,.04) 1px, transparent 1px);
+    }
+    html.light .hero-card {
+      box-shadow: 0 40px 80px rgba(100,80,180,.15);
+    }
+    html.light .btn-primary { color: #fff; }
+    html.light .work-card { box-shadow: 0 2px 16px var(--shadow); }
+    html.light .work-card:hover { box-shadow: 0 12px 40px var(--shadow); }
+    html.light .about-img-placeholder { background: linear-gradient(135deg, var(--bg3), var(--bg2)); }
+    html.light #about { background: var(--bg2); }
+    html.light #qualification { background: var(--bg2); }
+    html.light .contact-item { box-shadow: 0 2px 10px var(--shadow); }
+    html.light footer { background: var(--bg2); }
+
+    /*  MOBILE  */
+    @media (max-width: 768px) {
+      #home { grid-template-columns: 1fr; gap: 3rem; padding: 7rem 5vw 4rem; }
+      .hero-right { display: none; }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .form-row { grid-template-columns: 1fr; }
+      nav ul { gap: 1.2rem; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style><!-- Init theme BEFORE render to prevent flash --><script>
+  (function(){
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = saved || (prefersDark ? 'dark' : 'light');
+    document.documentElement.classList.add(theme);
+  })();
+</script></head><body><!-- SKIP TO CONTENT --><a href="#main-content" class="skip-link">Langsung ke konten utama</a><!-- NAV --><nav role="navigation" aria-label="Navigasi utama"><div class="logo" aria-label="Logo">EV.</div><ul><li><a href="#home">Home</a></li><li><a href="#about">About</a></li><li><a href="#works">Works</a></li><li><a href="#qualification">Journey</a></li><li><a href="#contact">Contact</a></li></ul><button
+    class="theme-toggle"
+    id="themeToggle"
+    onclick="toggleTheme()"
+    aria-label="Toggle dark/light mode"
+    title="Ganti tema"
+  ><div class="toggle-track"><span aria-hidden="true"></span><span aria-hidden="true"></span></div><div class="toggle-thumb" id="toggleThumb" aria-hidden="true"><span id="toggleIcon">☾</span></div></button></nav><!-- HERO --><section id="home" aria-label="Halaman utama"><div id="main-content"></div><div class="hero-bg"></div><div class="hero-grid-lines"></div><div class="hero-left"><div class="hero-tag"><span></span>
+      Available for work
+    </div><h1 class="hero-name">
+      Hi, I'm<br><em>Eliza Vornia</em></h1><p class="hero-role"><strong>Full Stack Developer</strong> &amp; Creative Problem Solver
+    </p><p class="hero-desc">
+      Saya membangun aplikasi web dan mobile yang indah, cepat, dan mudah digunakan.
+      Dengan pengalaman lebih dari 2 tahun, saya berfokus pada kualitas kode dan pengalaman pengguna.
+    </p><div class="hero-btns"><a href="#works" class="btn btn-primary">Lihat Portfolio</a><a href="#contact" class="btn btn-outline">Hubungi Saya →</a></div></div><div class="hero-right"><div class="hero-card"><div class="hero-card-inner"><!-- ============================================================
+     FOTO AVATAR (Hero Card - kanan atas)
+     Ganti "assets/foto-profil.jpg" dengan nama file foto Anda
+     Ukuran ideal: 400x400px, format JPG atau WebP
+     ============================================================ -->
+<div class="avatar-placeholder" style="padding:0;overflow:hidden;background:none;">
+  <img src="assets/foto-profil.jpg"
+       alt="Foto profil Eliza Vornia"
+       style="width:100%;height:100%;object-fit:cover;border-radius:50%"
+       onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,var(--accent),var(--accent2))';this.parentNode.innerHTML='<span style=&quot;font-family:var(--font-display);font-size:2.5rem;font-weight:900;color:var(--bg)&quot;>EV</span>'"/>
+</div><p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem">Eliza Vornia</p><p style="font-size:.75rem;color:var(--accent);letter-spacing:.06em;text-transform:uppercase">Full Stack Developer</p><div class="hero-stats"><div class="stat"><div class="stat-num">2+</div><div class="stat-label">Years</div></div><div class="stat"><div class="stat-num">20+</div><div class="stat-label">Projects</div></div><div class="stat"><div class="stat-num">15+</div><div class="stat-label">Clients</div></div></div></div></div></div><div class="scroll-indicator"><div class="scroll-line"></div>
+    Scroll Down
+  </div></section><!-- ABOUT --><section id="about"><div class="about-grid"><div class="about-img-wrap reveal"><div class="about-img-placeholder" style="padding:0;overflow:hidden;font-size:0;">
+        <!-- ============================================================
+             FOTO PROFIL UTAMA (Section About)
+             Ganti "assets/foto-profil.jpg" dengan nama file foto Anda
+             Ukuran ideal: 400x500px, format JPG atau WebP
+             ============================================================ -->
+        <img src="assets/foto-profil.jpg"
+             alt="Foto Eliza Vornia"
+             style="width:100%;height:100%;object-fit:cover;border-radius:1.5rem;"
+             onerror="this.style.display='none';this.parentNode.style.fontSize='5rem';this.parentNode.innerHTML='&#128248;'"/>
+      </div><div class="about-float"><div class="float-icon"></div><div class="float-text"><strong>Top Graduate</strong><span>GPA 3.9/4.0</span></div></div></div><div class="reveal"><span class="section-tag">About Me</span><h2 class="section-title">Tentang <em>Saya</em></h2><div class="divider"></div><p style="color:var(--muted);line-height:1.9;margin-bottom:1.5rem">
+        Saya adalah seorang Full Stack Developer dengan pengalaman lebih dari 2 tahun
+        membangun aplikasi web dan mobile. Saya bersemangat dalam menciptakan produk
+        digital yang tidak hanya fungsional, tetapi juga memberikan pengalaman yang
+        luar biasa bagi pengguna.
+      </p><p style="color:var(--muted);line-height:1.9;margin-bottom:2rem">
+        Keahlian saya mencakup frontend development dengan React, backend dengan Node.js,
+        dan mobile development. Saya selalu mengikuti perkembangan teknologi terbaru dan
+        berkomitmen pada kode yang bersih dan terstruktur.
+      </p><div class="skills-wrap"><div class="skills-title">Tech Stack</div><div class="skills-list"><span class="skill-tag">React</span><span class="skill-tag">Next.js</span><span class="skill-tag">TypeScript</span><span class="skill-tag">Node.js</span><span class="skill-tag">Python</span><span class="skill-tag">Flutter</span><span class="skill-tag">PostgreSQL</span><span class="skill-tag">MongoDB</span><span class="skill-tag">Docker</span><span class="skill-tag">Git</span><span class="skill-tag">Figma</span></div></div><div style="margin-top:2rem"><a href="#" class="btn btn-primary" style="display:inline-block">Download CV ↓</a></div></div></div></section><!-- WORKS --><section id="works"><div class="reveal"><span class="section-tag">Portfolio</span><h2 class="section-title">Recent <em>Works</em></h2><div class="divider"></div><p class="section-desc">Beberapa proyek terbaik yang telah saya kerjakan</p></div><div class="filter-bar reveal"><button class="filter-btn active" onclick="filterWorks('all', this)">Semua</button><button class="filter-btn" onclick="filterWorks('web', this)">Web</button><button class="filter-btn" onclick="filterWorks('mobile', this)">Mobile</button><button class="filter-btn" onclick="filterWorks('uiux', this)">UI/UX</button></div><div class="works-grid reveal" id="worksGrid"><div class="work-card" data-cat="web"><!-- ============================================================
+     FOTO PROJECT: E-Commerce Platform
+     Ganti "assets/projects/project-ecommerce.jpg" dengan screenshot project Anda
+     Ukuran ideal: 800x500px, format JPG atau WebP
+     ============================================================ -->
+    <div class="work-thumb" style="padding:0;overflow:hidden;">
+      <img src="assets/projects/project-ecommerce.jpg"
+           alt="Screenshot E-Commerce Platform"
+           style="width:100%;height:100%;object-fit:cover;"
+           onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#1a0533,#2d1060)';this.parentNode.style.display='flex';this.parentNode.style.alignItems='center';this.parentNode.style.justifyContent='center';"/>
+    </div><div class="work-body"><div class="work-tags"><span class="work-tag">React</span><span class="work-tag">Node.js</span><span class="work-tag">MongoDB</span></div><div class="work-title">E-Commerce Platform</div><div class="work-desc">Platform belanja online lengkap dengan fitur manajemen produk, keranjang belanja, dan payment gateway.</div><div class="work-links"><a href="#" class="work-link">Live Demo →</a><a href="#" class="work-link">GitHub →</a></div></div></div><div class="work-card" data-cat="mobile"><!-- ============================================================
+     FOTO PROJECT: Health Tracker App
+     Ganti "assets/projects/project-health-tracker.jpg" dengan screenshot project Anda
+     Ukuran ideal: 800x500px, format JPG atau WebP
+     ============================================================ -->
+    <div class="work-thumb" style="padding:0;overflow:hidden;">
+      <img src="assets/projects/project-health-tracker.jpg"
+           alt="Screenshot Health Tracker App"
+           style="width:100%;height:100%;object-fit:cover;"
+           onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#003322,#00533a)';this.parentNode.style.display='flex';this.parentNode.style.alignItems='center';this.parentNode.style.justifyContent='center';"/>
+    </div><div class="work-body"><div class="work-tags"><span class="work-tag">Flutter</span><span class="work-tag">Firebase</span></div><div class="work-title">Health Tracker App</div><div class="work-desc">Aplikasi mobile untuk melacak kesehatan harian dengan fitur AI-powered insights dan dashboard analitik.</div><div class="work-links"><a href="#" class="work-link">Play Store →</a><a href="#" class="work-link">GitHub →</a></div></div></div><div class="work-card" data-cat="web"><!-- ============================================================
+     FOTO PROJECT: Analytics Dashboard
+     Ganti "assets/projects/project-analytics.jpg" dengan screenshot project Anda
+     Ukuran ideal: 800x500px, format JPG atau WebP
+     ============================================================ -->
+    <div class="work-thumb" style="padding:0;overflow:hidden;">
+      <img src="assets/projects/project-analytics.jpg"
+           alt="Screenshot Analytics Dashboard"
+           style="width:100%;height:100%;object-fit:cover;"
+           onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#1a1500,#4a3800)';this.parentNode.style.display='flex';this.parentNode.style.alignItems='center';this.parentNode.style.justifyContent='center';"/>
+    </div><div class="work-body"><div class="work-tags"><span class="work-tag">Next.js</span><span class="work-tag">PostgreSQL</span><span class="work-tag">Prisma</span></div><div class="work-title">Analytics Dashboard</div><div class="work-desc">Dashboard analitik real-time untuk bisnis dengan visualisasi data interaktif dan laporan otomatis.</div><div class="work-links"><a href="#" class="work-link">Live Demo →</a><a href="#" class="work-link">GitHub →</a></div></div></div><div class="work-card" data-cat="uiux"><!-- ============================================================
+     FOTO PROJECT: Banking App Redesign
+     Ganti "assets/projects/project-banking.jpg" dengan screenshot project Anda
+     Ukuran ideal: 800x500px, format JPG atau WebP
+     ============================================================ -->
+    <div class="work-thumb" style="padding:0;overflow:hidden;">
+      <img src="assets/projects/project-banking.jpg"
+           alt="Screenshot Banking App Redesign"
+           style="width:100%;height:100%;object-fit:cover;"
+           onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#1a0020,#4a005a)';this.parentNode.style.display='flex';this.parentNode.style.alignItems='center';this.parentNode.style.justifyContent='center';"/>
+    </div><div class="work-body"><div class="work-tags"><span class="work-tag">Figma</span><span class="work-tag">UI/UX</span></div><div class="work-title">Banking App Redesign</div><div class="work-desc">Redesain antarmuka aplikasi perbankan dengan fokus pada kemudahan penggunaan dan aksesibilitas.</div><div class="work-links"><a href="#" class="work-link">Figma →</a><a href="#" class="work-link">Case Study →</a></div></div></div><div class="work-card" data-cat="mobile"><!-- ============================================================
+     FOTO PROJECT: AI Chat Assistant
+     Ganti "assets/projects/project-ai-chat.jpg" dengan screenshot project Anda
+     Ukuran ideal: 800x500px, format JPG atau WebP
+     ============================================================ -->
+    <div class="work-thumb" style="padding:0;overflow:hidden;">
+      <img src="assets/projects/project-ai-chat.jpg"
+           alt="Screenshot AI Chat Assistant"
+           style="width:100%;height:100%;object-fit:cover;"
+           onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#00152a,#003a6e)';this.parentNode.style.display='flex';this.parentNode.style.alignItems='center';this.parentNode.style.justifyContent='center';"/>
+    </div><div class="work-body"><div class="work-tags"><span class="work-tag">React Native</span><span class="work-tag">Python</span><span class="work-tag">TensorFlow</span></div><div class="work-title">AI Chat Assistant</div><div class="work-desc">Aplikasi chatbot cerdas dengan kemampuan NLP untuk customer service otomatis.</div><div class="work-links"><a href="#" class="work-link">App Store →</a><a href="#" class="work-link">GitHub →</a></div></div></div><div class="work-card" data-cat="web"><!-- ============================================================
+     FOTO PROJECT: Project Management Tool
+     Ganti "assets/projects/project-management.jpg" dengan screenshot project Anda
+     Ukuran ideal: 800x500px, format JPG atau WebP
+     ============================================================ -->
+    <div class="work-thumb" style="padding:0;overflow:hidden;">
+      <img src="assets/projects/project-management.jpg"
+           alt="Screenshot Project Management Tool"
+           style="width:100%;height:100%;object-fit:cover;"
+           onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#001a1a,#004040)';this.parentNode.style.display='flex';this.parentNode.style.alignItems='center';this.parentNode.style.justifyContent='center';"/>
+    </div><div class="work-body"><div class="work-tags"><span class="work-tag">Vue.js</span><span class="work-tag">Laravel</span><span class="work-tag">MySQL</span></div><div class="work-title">Project Management Tool</div><div class="work-desc">Alat manajemen proyek kolaboratif dengan fitur Kanban, timeline, dan integrasi tim.</div><div class="work-links"><a href="#" class="work-link">Live Demo →</a><a href="#" class="work-link">GitHub →</a></div></div></div></div></section><!-- QUALIFICATION --><section id="qualification"><div class="reveal"><span class="section-tag">My Journey</span><h2 class="section-title">Pengalaman &amp; <em>Pendidikan</em></h2><div class="divider"></div></div><div class="qual-tabs reveal"><button class="qual-tab active" onclick="switchTab('education', this)">Pendidikan</button><button class="qual-tab" onclick="switchTab('experience', this)">Pengalaman</button><button class="qual-tab" onclick="switchTab('certificates', this)">Sertifikasi</button></div><div id="tab-education" class="qual-content active reveal"><div class="timeline"><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2021 – 2025</div><div class="timeline-title">S1 Teknik Informatika</div><div class="timeline-sub">Universitas XYZ</div><div class="timeline-desc">IPK: 3.9/4.0 — Fokus pada software engineering dan pengembangan aplikasi mobile. Lulus dengan predikat Magna Cumlaude.</div></div><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">Feb – Jul 2023</div><div class="timeline-title">Mobile Development Bootcamp</div><div class="timeline-sub">Bangkit Academy by Google, Gojek, Tokopedia</div><div class="timeline-desc">Program intensif pengembangan aplikasi Android selama 6 bulan. Lulus dengan predikat Distinction.</div></div><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2018 – 2021</div><div class="timeline-title">SMK Rekayasa Perangkat Lunak</div><div class="timeline-sub">SMKS Telkom Sandhy Putra</div><div class="timeline-desc">Nilai rata-rata: 90.5/100. Dasar pemrograman dan pengembangan web.</div></div></div></div><div id="tab-experience" class="qual-content reveal"><div class="timeline"><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">Agu 2023 – Sekarang</div><div class="timeline-title">Co-Founder &amp; Full Stack Developer</div><div class="timeline-sub">Startup XYZ</div><div class="timeline-desc">Mendirikan startup teknologi bersama tim beranggotakan 7 orang. Memimpin pengembangan produk dari ideasi hingga peluncuran pasar. Berhasil mengamankan pendanaan melalui program inkubasi.</div></div><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">Jan – Jul 2024</div><div class="timeline-title">Software Engineer Intern</div><div class="timeline-sub">PT QTERA Mandiri</div><div class="timeline-desc">Mengembangkan produk aplikasi perusahaan dengan Jetpack Compose dalam arsitektur MVVM. Meningkatkan cakupan Unit Test hingga lebih dari 80% menggunakan JUnit dan Kover.</div></div><div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">Agu – Des 2023</div><div class="timeline-title">Software Engineer Intern (Flutter)</div><div class="timeline-sub">PT GITS Indonesia</div><div class="timeline-desc">Berkolaborasi mengembangkan aplikasi mobile menggunakan Flutter Framework, Scrum Methodology, dan Trunk-Based Development.</div></div></div></div><div id="tab-certificates" class="qual-content reveal"><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem"><div class="work-card" style="padding:1.2rem"><div style="font-size:1.5rem;margin-bottom:.8rem"></div><div style="font-size:.85rem;font-weight:600;margin-bottom:.3rem">Google Associate Android Developer</div><div style="font-size:.75rem;color:var(--muted)">Google Developers · 2024</div></div><div class="work-card" style="padding:1.2rem"><div style="font-size:1.5rem;margin-bottom:.8rem"></div><div style="font-size:.85rem;font-weight:600;margin-bottom:.3rem">AWS Cloud Practitioner</div><div style="font-size:.75rem;color:var(--muted)">Amazon Web Services · 2024</div></div><div class="work-card" style="padding:1.2rem"><div style="font-size:1.5rem;margin-bottom:.8rem"></div><div style="font-size:.85rem;font-weight:600;margin-bottom:.3rem">Flutter Advanced Development</div><div style="font-size:.75rem;color:var(--muted)">Dicoding Indonesia · 2023</div></div><div class="work-card" style="padding:1.2rem"><div style="font-size:1.5rem;margin-bottom:.8rem"></div><div style="font-size:.85rem;font-weight:600;margin-bottom:.3rem">Meta Front-End Developer</div><div style="font-size:.75rem;color:var(--muted)">Meta / Coursera · 2023</div></div><div class="work-card" style="padding:1.2rem"><div style="font-size:1.5rem;margin-bottom:.8rem"></div><div style="font-size:.85rem;font-weight:600;margin-bottom:.3rem">Cybersecurity Essentials</div><div style="font-size:.75rem;color:var(--muted)">Cisco Networking Academy · 2022</div></div><div class="work-card" style="padding:1.2rem"><div style="font-size:1.5rem;margin-bottom:.8rem"></div><div style="font-size:.85rem;font-weight:600;margin-bottom:.3rem">TOEFL Score 600+</div><div style="font-size:.75rem;color:var(--muted)">ETS · 2023</div></div></div></div></section><!-- CONTACT --><section id="contact"><div class="contact-grid"><div class="reveal"><span class="section-tag">Get In Touch</span><h2 class="section-title">Mari <em>Berkolaborasi</em></h2><div class="divider"></div><p class="section-desc">
+        Punya proyek menarik atau ingin berkolaborasi? Saya selalu terbuka untuk
+        peluang baru dan diskusi menarik.
+      </p><div class="contact-items"><div class="contact-item"><div class="contact-icon"></div><div class="contact-detail"><strong>Email</strong><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9be2f4eee9f5faf6fedbfef6faf2f7b5f8f4f6">[email&#160;protected]</a></span></div></div><div class="contact-item"><div class="contact-icon"></div><div class="contact-detail"><strong>WhatsApp / Telegram</strong><span>+62 8xx-xxxx-xxxx</span></div></div><div class="contact-item"><div class="contact-icon"></div><div class="contact-detail"><strong>LinkedIn</strong><span>linkedin.com/in/elizavornia</span></div></div><div class="contact-item"><div class="contact-icon"></div><div class="contact-detail"><strong>GitHub</strong><span>github.com/elizavornia</span></div></div></div></div><div class="reveal"><div class="contact-form"><div class="form-row"><div class="form-group"><label>Nama</label><input type="text" placeholder="John Doe" /></div><div class="form-group"><label>Email</label><input type="email" placeholder="john@email.com" /></div></div><div class="form-group"><label>Subjek Proyek</label><input type="text" placeholder="Website / Mobile App / Konsultasi..." /></div><div class="form-group"><label>Pesan</label><textarea placeholder="Ceritakan lebih lanjut tentang proyek Anda..."></textarea></div><button class="btn btn-primary" onclick="sendMessage()" style="align-self:flex-start">
+          Kirim Pesan
+        </button><p id="formMsg" style="font-size:.8rem;color:var(--accent2);display:none">
+           Pesan terkirim! Saya akan segera menghubungi Anda.
+        </p></div></div></div></section><!-- FOOTER --><footer><div class="footer-logo">EV.</div><p>© 2025 Eliza Vornia. Built with love</p><div class="social-links"><a href="#" class="social-link" title="GitHub">⑂</a><a href="#" class="social-link" title="LinkedIn">in</a><a href="#" class="social-link" title="Twitter"></a><a href="#" class="social-link" title="Instagram"></a></div></footer><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  //  THEME TOGGLE 
+  function toggleTheme() {
+    const html = document.documentElement;
+    const isLight = html.classList.contains('light');
+    html.classList.remove('light', 'dark');
+    const newTheme = isLight ? 'dark' : 'light';
+    html.classList.add(newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateToggleIcon(newTheme);
+
+    // Announce for screen readers
+    const announcement = document.getElementById('themeAnnouncement');
+    announcement.textContent = newTheme === 'light' ? 'Mode terang diaktifkan' : 'Mode gelap diaktifkan';
+    setTimeout(() => { announcement.textContent = ''; }, 2000);
+  }
+
+  function updateToggleIcon(theme) {
+    const icon = document.getElementById('toggleIcon');
+    if (icon) icon.textContent = theme === 'light' ? '☀' : '☾';
+    const toggle = document.getElementById('themeToggle');
+    if (toggle) toggle.setAttribute('aria-label', theme === 'light' ? 'Aktifkan mode gelap' : 'Aktifkan mode terang');
+  }
+
+  // Init icon on load
+  document.addEventListener('DOMContentLoaded', () => {
+    const theme = document.documentElement.classList.contains('light') ? 'light' : 'dark';
+    updateToggleIcon(theme);
+  });
+
+  //  SCROLL REVEAL 
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  //  FILTER WORKS 
+  function filterWorks(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-pressed', 'false');
+    });
+    btn.classList.add('active');
+    btn.setAttribute('aria-pressed', 'true');
+    document.querySelectorAll('.work-card').forEach(card => {
+      const show = cat === 'all' || card.dataset.cat === cat;
+      card.style.display = show ? '' : 'none';
+      if (show) {
+        card.style.animation = 'fadeUp .4s ease';
+        setTimeout(() => card.style.animation = '', 400);
+      }
+    });
+  }
+
+  //  TAB SWITCH 
+  function switchTab(tab, btn) {
+    document.querySelectorAll('.qual-tab').forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    document.querySelectorAll('.qual-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById('tab-' + tab).classList.add('active');
+  }
+
+  //  SEND MESSAGE 
+  function sendMessage() {
+    const msg = document.getElementById('formMsg');
+    msg.style.display = 'block';
+    msg.setAttribute('role', 'alert');
+    setTimeout(() => msg.style.display = 'none', 4000);
+  }
+
+  //  NAV ACTIVE ON SCROLL 
+  window.addEventListener('scroll', () => {
+    const sections = ['home','about','works','qualification','contact'];
+    const scrollY = window.scrollY + 100;
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && scrollY >= el.offsetTop && scrollY < el.offsetTop + el.offsetHeight) {
+        document.querySelectorAll('nav a').forEach(a => {
+          a.style.color = a.getAttribute('href') === '#'+id ? 'var(--accent)' : '';
+        });
+      }
+    });
+  });
+</scri
